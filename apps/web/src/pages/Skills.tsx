@@ -1,12 +1,12 @@
 import { motion } from "framer-motion";
 
 const skills = [
-  { name: "Android / Kotlin", pct: 90 },
-  { name: "Node.js / Express", pct: 85 },
-  { name: "Python", pct: 80 },
-  { name: "React / TypeScript", pct: 75 },
-  { name: "CI/CD (GitHub Actions)", pct: 70 },
-  { name: "SQL / SQLite", pct: 75 },
+  { name: "Claude", pct: 70 },
+  { name: "ChatGPT", pct: 30 },
+  { name: "Gemini-Ai", pct: 50 },
+  { name: "Ngok", pct: 10 },
+  { name: "Deepseek", pct: 90 },
+  { name: "Copilot", pct: 60 },
 ];
 
 export default function Skills() {

@@ -11,10 +11,10 @@ const fadeUp = {
 };
 
 const stats = [
-  { label: "Projects", value: "20+" },
-  { label: "Languages", value: "8" },
-  { label: "Lines", value: "100K+" },
-  { label: "Online", value: "24/7" },
+  { label: "Projects", value: "4" },
+  { label: "Languages", value: "2" },
+  { label: "Lines", value: "2" },
+  { label: "Online", value: "8/7" },
 ];
 
 export default function Home() {

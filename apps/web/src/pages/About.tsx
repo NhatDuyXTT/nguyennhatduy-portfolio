@@ -16,19 +16,17 @@ export default function About() {
       <div className="grid md:grid-cols-2 gap-6">
         <motion.div {...fadeUp} className="glass-card">
           <p className="text-gray-300">
-            Tôi là một lập trình viên độc lập, làm việc chủ yếu một mình trên nhiều dự án khác nhau —
-            từ ứng dụng Android, dashboard quản lý server tự host, đến các script tự động hóa bằng Python.
+            Tôi là một sinh viên mới tốt nghiệp.
           </p>
           <p className="text-gray-300 mt-4">
-            Tôi thích xây dựng công cụ thực tế giải quyết vấn đề cụ thể, và luôn tìm cách tối ưu quy
-            trình làm việc — từ CI/CD trên GitHub Actions đến build trực tiếp trên thiết bị Android.
+            Tôi chẳng thích gì cả.
           </p>
         </motion.div>
         <motion.div {...fadeUp} transition={{ ...fadeUp.transition, delay: 0.15 }} className="glass-card">
           <h2 className="text-xl font-semibold mb-4">Thông tin nhanh</h2>
-          <p className="text-gray-300"><strong>Vai trò:</strong> Lập trình viên Full-stack / Mobile</p>
-          <p className="text-gray-300 mt-2"><strong>Công nghệ chính:</strong> Kotlin, Node.js, Python, React</p>
-          <p className="text-gray-300 mt-2"><strong>Đang làm:</strong> Ứng dụng Android & dashboard tự host</p>
+          <p className="text-gray-300"><strong>Vai trò:</strong> .../ ...</p>
+          <p className="text-gray-300 mt-2"><strong>Công nghệ chính:</strong> ChatGPT, Claude, Gemini-Ai, Ngok, Deepseek</p>
+          <p className="text-gray-300 mt-2"><strong>Đang làm:</strong> Làm tào lao& Chẳng có nào ra hồn.</p>
           <p className="text-gray-300 mt-2"><strong>Vị trí:</strong> Việt Nam</p>
         </motion.div>
       </div>
