@@ -1,6 +1,4 @@
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
-import { ArrowRight } from "lucide-react";
 import About from "./About";
 import Skills from "./Skills";
 import Contact from "./Contact";
@@ -35,9 +33,6 @@ export default function Home() {
         <p className="text-gray-400 text-lg max-w-xl mx-auto mb-8">
           Software Engineer • Cloud • Open Source • Networking • Minecraft
         </p>
-        <Link to="/projects" className="btn-gradient inline-flex items-center gap-2">
-          Xem dự án <ArrowRight size={18} />
-        </Link>
       </motion.section>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
