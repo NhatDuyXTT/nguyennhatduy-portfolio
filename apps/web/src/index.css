@@ -1,0 +1,73 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    position: relative;
+    overflow-x: hidden;
+  }
+  body::before {
+    content: "";
+    position: fixed;
+    inset: -30vh -30vw;
+    width: 160vw;
+    height: 160vh;
+    background:
+      radial-gradient(circle, #4EA8FF55 0%, transparent 25%),
+      radial-gradient(circle at 80% 30%, #7A5CFF55 0%, transparent 30%),
+      radial-gradient(circle at 40% 80%, #00F2FE33 0%, transparent 30%);
+    filter: blur(100px);
+    animation: aurora 15s infinite alternate;
+    z-index: -2;
+  }
+}
+
+@keyframes aurora {
+  0% { transform: translate(-50px, -30px) rotate(0deg); }
+  100% { transform: translate(60px, 40px) rotate(20deg); }
+}
+@keyframes float {
+  50% { transform: translateY(-15px); }
+}
+
+@layer components {
+  .nav-pill {
+    @apply fixed top-6 left-1/2 -translate-x-1/2 flex gap-8 px-8 py-3 rounded-full z-50;
+    background: rgba(255,255,255,.05);
+    backdrop-filter: blur(25px);
+    border: 1px solid rgba(255,255,255,.08);
+  }
+  .gradient-text {
+    background: linear-gradient(90deg, #ffffff, #8CCFFF, #9D8CFF);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .btn-gradient {
+    @apply px-8 py-4 rounded-full font-semibold transition-transform inline-block;
+    background: linear-gradient(90deg, #4EA8FF, #7A5CFF);
+  }
+  .btn-gradient:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 15px 40px rgba(78,168,255,.4);
+  }
+  .glass-card {
+    @apply rounded-2xl p-8 transition-transform;
+    background: rgba(255,255,255,.05);
+    backdrop-filter: blur(25px);
+    border: 1px solid rgba(255,255,255,.08);
+  }
+  .glass-card:hover {
+    transform: translateY(-10px);
+    border-color: #4EA8FF;
+  }
+  .avatar-ring {
+    @apply rounded-full p-1;
+    width: 160px;
+    height: 160px;
+    background: linear-gradient(135deg, #4EA8FF, #7A5CFF);
+    animation: float 4s infinite ease-in-out;
+    box-shadow: 0 0 80px rgba(80,150,255,.4);
+  }
+}

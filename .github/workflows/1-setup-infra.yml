@@ -1,0 +1,75 @@
+name: 1. Setup Infrastructure (D1 + R2)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    defaults:
+      run:
+        working-directory: apps/api
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - run: npm install -g wrangler@4
+        working-directory: .
+
+      - name: Create D1 database (bỏ qua nếu đã tồn tại)
+        id: d1
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          wrangler d1 create portfolio-db > d1-output.txt 2>&1 || true
+          cat d1-output.txt
+          DB_ID=$(grep -oE 'database_id = "[a-f0-9-]+"' d1-output.txt | sed -E 's/database_id = "(.+)"/\1/')
+          if [ -n "$DB_ID" ]; then
+            echo "DB_ID=$DB_ID" >> "$GITHUB_ENV"
+          else
+            echo "D1 có thể đã tồn tại, sẽ lấy id từ danh sách hiện có"
+          fi
+
+      - name: Lấy database_id nếu đã tồn tại từ trước
+        if: env.DB_ID == ''
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          wrangler d1 list --json > d1-list.json
+          DB_ID=$(node -pe "JSON.parse(require('fs').readFileSync('d1-list.json')).find(d => d.name === 'portfolio-db').uuid")
+          echo "DB_ID=$DB_ID" >> "$GITHUB_ENV"
+
+      - name: Ghi database_id vào wrangler.toml
+        run: |
+          sed -i "s/REPLACE_WITH_D1_DATABASE_ID/${DB_ID}/" wrangler.toml
+          cat wrangler.toml
+
+      - name: Create R2 bucket (bỏ qua nếu đã tồn tại)
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: wrangler r2 bucket create portfolio-media || echo "Bucket đã tồn tại, bỏ qua"
+
+      - name: Create Pages project - web
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: wrangler pages project create nguyennhatduy-web --production-branch main || echo "Project đã tồn tại, bỏ qua"
+
+      - name: Create Pages project - admin
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: wrangler pages project create nguyennhatduy-admin --production-branch main || echo "Project đã tồn tại, bỏ qua"
+
+      - name: Commit database_id vào repo
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add wrangler.toml
+          git diff --cached --quiet || git commit -m "chore: cập nhật D1 database_id [skip ci]"
+          git push
