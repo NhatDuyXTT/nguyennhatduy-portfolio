@@ -8,10 +8,20 @@ export async function login(request, env) {
   const username = String(body.username || '').trim();
   const password = String(body.password || '');
   if (!username || !password) return json({ error: 'Username and password required' }, 400);
-  const supabase = getSupabase(env);
-  const { data: user, error } = await supabase.from('users').select('*').eq('username', username).eq('status', 'active').single();
-  if (error || !user || !comparePassword(password, user.password)) return json({ error: 'Invalid credentials' }, 401);
-  return json({ success: true, token: await generateToken(user, env), role: user.role, username: user.username });
+  let supabase;
+  try {
+    supabase = getSupabase(env);
+    const { data: user, error } = await supabase.from('users').select('*').eq('username', username).eq('status', 'active').single();
+    if (error) {
+      console.error('Login Supabase query failed:', error);
+      return json({ error: 'Authentication backend unavailable' }, 503);
+    }
+    if (!user || !comparePassword(password, user.password)) return json({ error: 'Invalid credentials' }, 401);
+    return json({ success: true, token: await generateToken(user, env), role: user.role, username: user.username });
+  } catch (error) {
+    console.error('Login backend failure:', error);
+    return json({ error: 'Authentication backend unavailable' }, 503);
+  }
 }
 
 export async function me(request, env) {

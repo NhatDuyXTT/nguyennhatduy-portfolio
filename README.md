@@ -61,3 +61,13 @@ Before deploying the license Worker, set these Worker secrets:
 `SUPABASE_URL`, `SUPABASE_SERVICE_KEY`, `JWT_SECRET`, and the Telegram secrets if Telegram
 webhook functionality is used. Also ensure the Cloudflare route
 `admin.nguyennhatduy.qzz.io/license-api/*` is available in the `qzz.io` zone.
+
+## License API health checks
+
+After deploying the License API Worker, these endpoints are available on the admin domain:
+
+- `GET /license-api/health` — basic Worker health.
+- `GET /license-api/api/supabase-health` — verifies that `SUPABASE_URL` and `SUPABASE_SERVICE_KEY` are configured and that the Worker can query the `users` table. No secrets are returned.
+- `GET /license-api/api/login-health` — verifies that `POST /api/login` is registered, `JWT_SECRET` is configured correctly, and the Worker can reach Supabase. No credentials or secrets are returned.
+
+A successful login still requires a valid active user and a valid password hash in Supabase.
