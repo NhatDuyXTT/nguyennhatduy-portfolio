@@ -1,0 +1,20 @@
+name = "portfolio-api"
+main = "src/index.ts"
+compatibility_date = "2025-01-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "portfolio-db"
+database_id = "b383b2c7-8669-446b-b645-f23c661a014f"
+migrations_dir = "../../database/migrations"
+
+[[r2_buckets]]
+binding = "MEDIA"
+bucket_name = "portfolio-media"
+
+[vars]
+ENVIRONMENT = "production"
+
+[[routes]]
+pattern = "nguyennhatduy.qzz.io/api/*"
+zone_name = "nguyennhatduy.qzz.io"

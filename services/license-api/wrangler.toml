@@ -1,0 +1,20 @@
+name = "nhatduypn-license-api"
+main = "src/index.js"
+compatibility_date = "2026-08-15"
+workers_dev = true
+
+[vars]
+ALLOWED_ORIGINS = "https://admin.nguyennhatduy.qzz.io"
+JWT_ISSUER = "nhatduypn"
+JWT_AUDIENCE = "nhatduypn-panel"
+
+# Secrets:
+# SUPABASE_URL
+# SUPABASE_SERVICE_KEY
+# JWT_SECRET
+# TELEGRAM_BOT_TOKEN
+# TELEGRAM_WEBHOOK_URL
+
+[[routes]]
+pattern = "admin.nguyennhatduy.qzz.io/license-api/*"
+zone_name = "qzz.io"

@@ -1,0 +1,19 @@
+{
+  "name": "license-api",
+  "version": "2.0.0",
+  "private": true,
+  "description": "NHATDUYPN License Management API integrated with portfolio admin",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "check": "wrangler deploy --dry-run"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.45.4",
+    "bcryptjs": "^2.4.3",
+    "jose": "^5.9.6"
+  },
+  "devDependencies": {
+    "wrangler": "^4.30.0"
+  }
+}

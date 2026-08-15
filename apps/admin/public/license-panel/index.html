@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NHATDUYPN - Panel</title>
+<script src="./config.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#05050A;
+  --surface:rgba(14,14,24,0.75);
+  --surface-opaque:#0E0E18;
+  --surface-2:rgba(30,30,46,0.5);
+  --border:rgba(255,255,255,0.06);
+  --border-hover:rgba(34,211,238,0.2);
+  --text:#F3F4F6;
+  --text-2:#9CA3AF;
+  --text-3:#6B7280;
+  --accent:#22D3EE;
+  --accent2:#06B6D4;
+  --accent-dim:rgba(34,211,238,0.08);
+  --accent-glow:rgba(34,211,238,0.25);
+  --success:#10B981;
+  --success-bg:rgba(16,185,129,0.08);
+  --success-glow:rgba(16,185,129,0.2);
+  --danger:#EF4444;
+  --danger-bg:rgba(239,68,68,0.08);
+  --danger-glow:rgba(239,68,68,0.2);
+}
+html,body{height:100%}
+body{
+  background:var(--bg);
+  background-image:
+    radial-gradient(ellipse at 10% 20%,rgba(34,211,238,0.04) 0%,transparent 50%),
+    radial-gradient(ellipse at 90% 80%,rgba(6,182,212,0.03) 0%,transparent 50%),
+    radial-gradient(1px 1px at 20px 20px,rgba(255,255,255,0.015) 0%,transparent 0%);
+  background-size:100% 100%,100% 100%,32px 32px;
+  color:var(--text);
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+  overflow-x:hidden;
+  letter-spacing:-0.1px;
+}
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:rgba(255,255,255,0.2)}
+
+/* Login */
+.login-wrap{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px;position:relative}
+.login-card{
+  width:100%;max-width:390px;
+  background:var(--surface-opaque);
+  border:1px solid var(--border);
+  border-top:1px solid rgba(255,255,255,0.12);
+  border-radius:18px;
+  padding:44px 36px;
+  box-shadow:0 24px 60px rgba(0,0,0,0.6), 0 0 40px rgba(34,211,238,0.02);
+  backdrop-filter:blur(20px);
+}
+.login-logo{text-align:center;margin-bottom:36px}
+.login-logo svg{width:48px;height:48px;color:var(--accent);filter:drop-shadow(0 0 16px rgba(34,211,238,0.3))}
+.login-logo h1{font-size:24px;font-weight:800;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px;letter-spacing:-0.5px}
+.login-logo p{font-size:13px;color:var(--text-2);font-weight:400}
+.form-group{position:relative;margin-bottom:22px}
+.form-group input{
+  width:100%;padding:16px 14px 8px;font-size:15px;font-family:inherit;
+  background:rgba(255,255,255,0.03);
+  border:1px solid var(--border);
+  border-radius:10px;
+  color:var(--text);
+  outline:none;
+  transition:all .2s ease;
+}
+.form-group input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-dim), inset 0 1px 2px rgba(0,0,0,0.2);background:rgba(0,0,0,0.2)}
+.form-group label{
+  position:absolute;left:14px;top:14px;font-size:14px;color:var(--text-3);
+  pointer-events:none;transition:all .2s ease;
+}
+.form-group input:focus+label,.form-group input:not(:placeholder-shown)+label{
+  top:6px;font-size:10px;color:var(--accent);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;
+}
+.form-group input::placeholder{color:transparent}
+.login-btn{
+  width:100%;padding:14px;border:none;border-radius:10px;font-size:15px;font-weight:700;font-family:inherit;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  color:#05050A;
+  cursor:pointer;
+  transition:all .2s ease;
+  margin-top:8px;position:relative;
+  box-shadow:0 4px 12px rgba(34,211,238,0.2);
+}
+.login-btn:hover{opacity:.95;box-shadow:0 0 24px var(--accent-glow);transform:translateY(-1px)}
+.login-btn:active{transform:translateY(1px)}
+.login-error{color:var(--danger);font-size:13px;text-align:center;margin-top:12px;min-height:20px;font-weight:500}
+
+/* Dashboard */
+.dash{display:none;max-width:1380px;margin:0 auto;padding:24px 20px}
+.navbar{
+  display:flex;align-items:center;justify-content:space-between;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-top:1px solid rgba(255,255,255,0.08);
+  border-radius:16px;
+  padding:14px 24px;
+  margin-bottom:24px;
+  box-shadow:0 8px 32px rgba(0,0,0,0.3);
+  backdrop-filter:blur(16px);
+}
+.navbar-brand{display:flex;align-items:center;gap:12px}
+.navbar-brand svg{width:22px;height:22px;color:var(--accent);filter:drop-shadow(0 0 8px rgba(34,211,238,0.2))}
+.navbar-brand span{font-weight:700;font-size:16px;color:var(--text);letter-spacing:-0.3px}
+.navbar-brand small{font-size:12px;color:var(--text-2);font-weight:400;margin-left:4px}
+.navbar-actions{display:flex;gap:8px}
+.icon-btn{
+  width:36px;height:36px;border:none;border-radius:10px;background:var(--surface-2);
+  color:var(--text-2);cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:all .15s ease;
+  border:1px solid var(--border);
+}
+.icon-btn:hover{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#05050A;border-color:transparent;box-shadow:0 0 12px rgba(34,211,238,0.15)}
+.icon-btn.danger:hover{background:var(--danger);color:#fff;border-color:transparent;box-shadow:0 0 12px rgba(239,68,68,0.2)}
+[data-tip]{position:relative}
+[data-tip]::after{
+  content:attr(data-tip);position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%) scale(.95);
+  background:var(--surface-opaque);color:var(--text);font-size:11px;font-weight:600;padding:6px 12px;border-radius:8px;
+  white-space:nowrap;opacity:0;pointer-events:none;transition:all .15s ease;
+  border:1px solid var(--border);box-shadow:0 10px 25px rgba(0,0,0,0.3);z-index:999;
+}
+[data-tip]:hover::after{opacity:1;transform:translateX(-50%) scale(1)}
+
+/* Stats */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-bottom:24px}
+.stat-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-top:1px solid rgba(255,255,255,0.08);
+  border-radius:16px;
+  padding:20px;
+  display:flex;align-items:center;gap:16px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.25);
+  backdrop-filter:blur(16px);
+  transition:transform 0.2s ease, border-color 0.2s ease;
+}
+.stat-card:hover{transform:translateY(-2px);border-color:var(--border-hover)}
+.stat-icon{
+  width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;
+  box-shadow:inset 0 1px 2px rgba(255,255,255,0.1);
+}
+.stat-icon svg{width:20px;height:20px}
+.stat-icon.cyan{background:var(--accent-dim);color:var(--accent);border:1px solid rgba(34,211,238,0.15)}
+.stat-icon.green{background:var(--success-bg);color:var(--success);border:1px solid rgba(16,185,129,0.15)}
+.stat-icon.red{background:var(--danger-bg);color:var(--danger);border:1px solid rgba(239,68,68,0.15)}
+.stat-info h3{font-size:24px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums;letter-spacing:-0.5px}
+.stat-info p{font-size:12px;color:var(--text-2);margin-top:6px;font-weight:500;text-transform:uppercase;letter-spacing:0.5px}
+
+/* Section card */
+.section-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-top:1px solid rgba(255,255,255,0.08);
+  border-radius:16px;
+  padding:24px;
+  margin-bottom:24px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.25);
+  backdrop-filter:blur(16px);
+}
+.section-title{font-size:11px;font-weight:700;color:var(--text-2);text-transform:uppercase;letter-spacing:1px;margin-bottom:18px}
+
+/* Tabs */
+.tabs{display:flex;gap:4px;margin-bottom:24px;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:4px;overflow:hidden;backdrop-filter:blur(16px)}
+.tab-btn{flex:1;padding:12px 18px;border:none;background:transparent;color:var(--text-2);font-size:13.5px;font-weight:600;font-family:inherit;cursor:pointer;border-radius:12px;transition:all .15s ease}
+.tab-btn:hover{color:var(--text)}
+.tab-btn.active{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#05050A;font-weight:700;box-shadow:0 4px 12px rgba(34,211,238,0.1)}
+.tab-pane{display:none}
+.tab-pane.active{display:block}
+
+/* Generate form */
+.gen-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px}
+.gen-field label{display:block;font-size:11px;color:var(--text-2);font-weight:600;margin-bottom:8px;text-transform:uppercase;letter-spacing:.8px}
+.gen-field select,.gen-input{
+  width:100%;padding:12px 14px;font-size:14px;font-family:inherit;
+  background:var(--surface-2);border:1px solid var(--border);border-radius:10px;
+  color:var(--text);outline:none;transition:all .2s ease;
+}
+.gen-field select:focus,.gen-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-dim)}
+.gen-btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:12px 28px;border:none;border-radius:10px;font-size:14px;font-weight:700;font-family:inherit;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));color:#05050A;cursor:pointer;transition:all .15s ease;position:relative;
+  box-shadow:0 4px 12px rgba(34,211,238,0.15);
+}
+.gen-btn:hover{box-shadow:0 0 24px var(--accent-glow);transform:translateY(-1px)}
+.gen-btn:active{transform:translateY(1px)}
+.gen-btn:disabled{opacity:.4;cursor:not-allowed}
+
+.gen-result{display:none;margin-top:18px}
+.gen-result.show{display:block}
+.gen-result-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.gen-result-pre{
+  background:var(--bg);border:1px solid var(--border);border-radius:10px;
+  padding:16px;font-family:'Fira Code',monospace;font-size:12.5px;line-height:1.7;
+  color:var(--text);overflow-x:auto;white-space:pre-wrap;max-height:320px;overflow-y:auto;
+  user-select:all;
+}
+.gen-copy-btn{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:8px 16px;border:none;border-radius:8px;font-size:12px;font-weight:600;font-family:inherit;
+  background:var(--surface-2);color:var(--text-2);cursor:pointer;transition:all .15s ease;
+  border:1px solid var(--border);
+}
+.gen-copy-btn:hover{background:var(--accent);color:#fff}
+
+/* Table */
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+thead th{
+  text-align:left;padding:10px 8px;font-weight:600;color:var(--text-2);font-size:11px;
+  text-transform:uppercase;letter-spacing:0.8px;border-bottom:1px solid var(--border)
+}
+tbody td{padding:10px 8px;border-bottom:1px solid rgba(255,255,255,0.03);vertical-align:middle;color:var(--text-2)}
+tbody tr{transition:background-color 0.15s ease}
+tbody tr:hover{background:rgba(255,255,255,0.015)}
+.key-cell{font-family:'Fira Code',monospace;font-size:12.5px;display:flex;align-items:center;gap:8px;color:var(--text)}
+.key-cell .copy-btn{
+  width:26px;height:26px;border:none;border-radius:6px;background:var(--surface-2);
+  color:var(--text-2);cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:all .15s ease;flex-shrink:0;
+  border:1px solid var(--border);
+}
+.key-cell .copy-btn svg{width:13px;height:13px}
+.copy-btn:hover{background:var(--accent);color:#05050A;border-color:transparent}
+.badge{
+  display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:20px;
+  font-size:11px;font-weight:600;
+  border:1px solid transparent;
+}
+.badge-active{background:rgba(16,185,129,0.08);color:#34D399;border-color:rgba(16,185,129,0.15)}
+.badge-expired{background:rgba(239,68,68,0.08);color:#F87171;border-color:rgba(239,68,68,0.15)}
+.badge-pending{background:rgba(251,191,36,0.08);color:#FBBF24;border-color:rgba(251,191,36,0.15)}
+.empty{text-align:center;padding:54px 0;color:var(--text-3);font-size:14px;font-weight:500}
+
+/* Modal */
+.modal-overlay{
+  display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);
+  z-index:999;align-items:center;justify-content:center;padding:20px;
+  backdrop-filter:blur(4px);
+}
+.modal-overlay.active{display:flex}
+.modal{
+  background:var(--surface-opaque);
+  border:1px solid var(--border);
+  border-top:1px solid rgba(255,255,255,0.12);
+  border-radius:16px;
+  padding:32px;width:100%;max-width:390px;
+  box-shadow:0 24px 60px rgba(0,0,0,0.6);
+  animation:modalIn .3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes modalIn{from{transform:scale(.95) translateY(10px);opacity:0}to{transform:scale(1) translateY(0);opacity:1}}
+.modal h2{font-size:19px;font-weight:800;margin-bottom:8px;color:var(--text);letter-spacing:-0.3px}
+.modal p{font-size:14px;color:var(--text-2);margin-bottom:20px;line-height:1.4}
+.modal-actions{display:flex;gap:10px;justify-content:flex-end}
+.modal-actions button{padding:10px 20px;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;transition:all 0.15s ease}
+.modal-actions .cancel{background:var(--surface-2);color:var(--text-2);border:1px solid var(--border)}
+.modal-actions .cancel:hover{background:var(--surface-opaque);color:var(--text);border-color:var(--text-3)}
+.modal-actions .confirm{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#05050A;font-weight:700}
+.modal-actions .confirm:hover{box-shadow:0 0 16px rgba(34,211,238,0.25)}
+.modal-actions .confirm.danger{background:linear-gradient(135deg,var(--danger),#EF4444);color:#fff;font-weight:700}
+
+.toast{
+  position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(120px);
+  background:var(--surface-opaque);color:var(--text);padding:14px 28px;border-radius:12px;
+  font-size:14px;font-weight:600;opacity:0;transition:all .3s cubic-bezier(0.16, 1, 0.3, 1);
+  border:1px solid var(--border);z-index:999;pointer-events:none;box-shadow:0 20px 50px rgba(0,0,0,0.5);
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.success{border-color:var(--success);box-shadow:0 0 20px rgba(16,185,129,0.05), 0 20px 50px rgba(0,0,0,0.5)}
+.toast.error{border-color:var(--danger);box-shadow:0 0 20px rgba(239,68,68,0.05), 0 20px 50px rgba(0,0,0,0.5)}
+
+.reseller-card{background:var(--surface);border:1px solid var(--border);border-top:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:24px;margin-bottom:24px;box-shadow:0 10px 30px rgba(0,0,0,0.25);backdrop-filter:blur(16px)}
+.reseller-card .flex{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.reseller-card h3{font-size:16px;font-weight:800;color:var(--text);margin-bottom:16px;letter-spacing:-0.3px}
+.credit-badge{font-size:13.5px;color:var(--accent);font-weight:700;font-family:monospace}
+.reseller-status{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:600;border:1px solid transparent}
+.reseller-status.active{background:rgba(16,185,129,0.08);color:#34D399;border-color:rgba(16,185,129,0.15)}
+.reseller-status.banned{background:rgba(239,68,68,0.08);color:#F87171;border-color:rgba(239,68,68,0.15)}
+.reseller-actions{display:flex;gap:8px;margin-top:12px}
+
+@media(max-width:640px){
+  .gen-grid{grid-template-columns:1fr}
+  .stats{grid-template-columns:1fr}
+  .login-card{padding:24px 20px}
+  .dash{padding:12px}
+  .navbar{padding:10px 16px}
+}
+</style>
+<body>
+
+<!-- SVG Sprite -->
+<svg style="display:none" aria-hidden="true">
+  <symbol id="icon-key" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 11-7.778 7.778 5.5 5.5 0 017.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></symbol>
+  <symbol id="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></symbol>
+  <symbol id="icon-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></symbol>
+  <symbol id="icon-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="icon-trash" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4a1 1 0 011-1h6a1 1 0 011 1v2M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6"/><path d="M10 11v6M14 11v6"/></symbol>
+  <symbol id="icon-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></symbol>
+  <symbol id="icon-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="icon-refresh" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></symbol>
+  <symbol id="icon-logout" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></symbol>
+  <symbol id="icon-login" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4M10 17l5-5-5-5M3 12h12"/></symbol>
+  <symbol id="icon-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h18M3 6h18M3 18h18"/></symbol>
+  <symbol id="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></symbol>
+  <symbol id="icon-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></symbol>
+  <symbol id="icon-terminal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></symbol>
+  <symbol id="icon-restore" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><polyline points="3 3 3 8 8 8"/></symbol>
+</svg>
+
+<!-- Login -->
+<div class="login-wrap" id="loginWrap">
+  <div class="login-card">
+    <div class="login-logo">
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5"><use href="#icon-key"/></svg>
+      <h1>NHATDUYPN</h1>
+      <p>Key Management System</p>
+    </div>
+    <div class="form-group">
+      <input type="text" id="loginUser" placeholder=" " autocomplete="username">
+      <label for="loginUser">Username</label>
+    </div>
+    <div class="form-group">
+      <input type="password" id="loginPass" placeholder=" " autocomplete="current-password">
+      <label for="loginPass">Password</label>
+    </div>
+    <button class="login-btn" onclick="handleLogin()">Sign In</button>
+    <div class="login-error" id="loginError"></div>
+  </div>
+</div>
+
+<!-- Dashboard -->
+<div class="dash" id="dash">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><use href="#icon-key"/></svg>
+      <span>NHATDUYPN <small>· Panel</small></span>
+      <span id="roleBadge" style="font-size:10px;color:var(--accent);font-weight:600;margin-left:6px;letter-spacing:.5px;text-transform:uppercase">admin</span>
+      <span id="creditBadge" style="display:none;font-size:12px;color:var(--success);font-weight:600;margin-left:8px">● <span id="creditAmount">0</span> credits</span>
+    </div>
+    <div class="navbar-actions">
+      <button class="icon-btn" data-tip="Refresh" onclick="loadKeys()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><use href="#icon-refresh"/></svg></button>
+      <button class="icon-btn danger" data-tip="Logout" onclick="handleLogout()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><use href="#icon-logout"/></svg></button>
+    </div>
+  </nav>
+
+  <div class="stats">
+    <div class="stat-card">
+      <div class="stat-icon cyan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><use href="#icon-key"/></svg></div>
+      <div class="stat-info"><h3 id="statTotal">0</h3><p>Total Keys</p></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><use href="#icon-check"/></svg></div>
+      <div class="stat-info"><h3 id="statActive">0</h3><p>Active</p></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon red"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><use href="#icon-x"/></svg></div>
+      <div class="stat-info"><h3 id="statExpired">0</h3><p>Expired</p></div>
+    </div>
+    <div class="stat-card" id="creditStat" style="display:none">
+      <div class="stat-icon green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><use href="#icon-plus"/></svg></div>
+      <div class="stat-info"><h3 id="statCredits">0</h3><p>Credits</p></div>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs" id="tabBar">
+    <button class="tab-btn active" data-tab="keys" onclick="switchTab('keys')">Keys</button>
+    <button class="tab-btn" data-tab="resellers" onclick="switchTab('resellers')" id="resellerTabBtn" style="display:none">Resellers</button>
+  </div>
+
+  <!-- Keys Tab -->
+  <div class="tab-pane active" id="tabKeys">
+    <div class="section-card">
+      <div class="section-title">Generate License Key</div>
+      <div class="gen-grid">
+        <div class="gen-field">
+          <label for="genDuration">Duration</label>
+          <select id="genDuration">
+            <option value="1d">1 Day — 5 credits</option>
+            <option value="3d">3 Days — 10 credits</option>
+            <option value="7d">7 Days — 20 credits</option>
+            <option value="15d">15 Days — 25 credits</option>
+            <option value="30d" selected>30 Days — 30 credits</option>
+          </select>
+        </div>
+        <div class="gen-field">
+          <label for="genDevices">Max Devices</label>
+          <input type="number" id="genDevices" class="gen-input" value="1" min="1" max="999">
+        </div>
+        <div class="gen-field">
+          <label for="genQuantity">Quantity</label>
+          <select id="genQuantity">
+            <option value="1">1 Key</option>
+            <option value="5">5 Keys</option>
+            <option value="10">10 Keys</option>
+            <option value="25">25 Keys</option>
+            <option value="50">50 Keys</option>
+          </select>
+        </div>
+      </div>
+      <div id="genCreditDisplay" style="display:none;margin-bottom:12px;padding:10px 14px;background:var(--accent-dim);border:1px solid rgba(34,211,238,0.15);border-radius:10px;font-size:13px">
+        <span style="color:var(--text-2)">Credit Balance</span>
+        <span style="float:right;font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums" id="genCreditAmount">0</span>
+      </div>
+      <button class="gen-btn" onclick="handleGenerate()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><use href="#icon-plus"/></svg>
+        Generate
+      </button>
+      <div class="gen-result" id="genResult">
+        <div class="gen-result-header">
+          <span>Generated Keys</span>
+          <button class="gen-copy-btn" onclick="copyFormattedKeys()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><use href="#icon-copy"/></svg>
+            Copy All
+          </button>
+        </div>
+        <pre class="gen-result-pre" id="genResultText"></pre>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <div class="section-title" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
+        <span>License Keys</span>
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+          <select id="keyFilter" style="padding:6px 10px;font-size:12px;font-family:inherit;background:var(--surface-2);border:1px solid var(--border);border-radius:6px;color:var(--text-2);outline:none;cursor:pointer" onchange="loadKeys()">
+            <option value="">All creators</option>
+          </select>
+          <select id="statusFilter" style="padding:6px 10px;font-size:12px;font-family:inherit;background:var(--surface-2);border:1px solid var(--border);border-radius:6px;color:var(--text-2);outline:none;cursor:pointer" onchange="filterKeysLocal()">
+            <option value="">All Status</option>
+            <option value="pending">Not Used</option>
+            <option value="active">Active</option>
+            <option value="expired">Expired</option>
+          </select>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th>Key</th><th>Duration</th><th>Status</th><th>Devices</th><th>Created</th><th>Activated</th><th>Expires</th><th>Created by</th><th></th>
+          </tr></thead>
+          <tbody id="keyBody"><tr><td colspan="9" class="empty">Loading...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Resellers Tab -->
+  <div class="tab-pane" id="tabResellers">
+    <div class="reseller-card">
+      <div class="flex">
+        <h3>Create Reseller</h3>
+        <div>
+          <input class="gen-input" id="resellerNameInput" placeholder="Reseller name" style="width:180px;display:inline-block;margin-right:8px">
+          <button class="gen-btn" onclick="handleCreateReseller()" style="display:inline-flex">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><use href="#icon-plus"/></svg>
+            Create
+          </button>
+        </div>
+      </div>
+      <div id="resellerCreateResult" style="font-size:12px;color:var(--success);margin-top:8px;min-height:20px"></div>
+    </div>
+
+    <div class="section-card">
+      <div class="section-title">Resellers</div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th>Name</th><th>Credits</th><th>Keys</th><th>Status</th><th>Created</th><th></th>
+          </tr></thead>
+          <tbody id="resellerBody"><tr><td colspan="6" class="empty">Loading...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <h2 id="modalTitle">Edit Expiry</h2>
+    <p id="modalDesc">Set new expiration period</p>
+    <div id="modalBody"></div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+const TOKEN_KEY = 'ckp_token';
+let token = localStorage.getItem(TOKEN_KEY) || '';
+let toastTimer = 0;
+
+function show(page){
+  document.getElementById('loginWrap').style.display = page === 'login' ? 'flex' : 'none';
+  document.getElementById('dash').style.display = page === 'dash' ? 'block' : 'none';
+}
+
+function toast(msg, type){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast ' + (type || '');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function() { t.classList.add('show'); }, 10);
+  setTimeout(function() { t.classList.remove('show'); }, 3000);
+}
+
+function decodeJWT(t){
+  try {
+    var p = t.split('.')[1];
+    return JSON.parse(atob(p.replace(/-/g,'+').replace(/_/g,'/').replace(/=+$/, '')));
+  } catch(e) { return {}; }
+}
+
+let currentTab = 'keys';
+
+function switchTab(tab){
+  currentTab = tab;
+  document.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.toggle('active', b.dataset.tab === tab); });
+  document.querySelectorAll('.tab-pane').forEach(function(p){ p.classList.toggle('active', p.id === 'tab' + tab.charAt(0).toUpperCase() + tab.slice(1)); });
+  if(tab === 'resellers') loadResellers();
+}
+
+function showResellerTab(show){
+  document.getElementById('resellerTabBtn').style.display = show ? '' : 'none';
+  if(!show && currentTab === 'resellers') switchTab('keys');
+}
+
+// ─── Reseller Management ───────────────────────
+async function loadResellers(){
+  var d = await api('GET', '/api/resellers');
+  var tb = document.getElementById('resellerBody');
+  if(!d || !d.length) { tb.innerHTML = '<tr><td colspan="6" class="empty">No resellers</td></tr>'; return; }
+  var h = '';
+  for(var i = 0; i < d.length; i++){
+    var r = d[i];
+    var created = new Date(r.created_at).toLocaleDateString();
+    var statusClass = r.status === 'active' ? 'active' : 'banned';
+    var toggleAction = r.status === 'active' ? 'ban' : 'unban';
+    var toggleLabel = r.status === 'active' ? 'Ban' : 'Unban';
+    var creditHtml = '';
+    if (r.unlimited) {
+      if (r.unlimited_expires_at) {
+        var leftMs = r.unlimited_expires_at - Date.now();
+        var leftDays = Math.max(0, Math.ceil(leftMs / 86400000));
+        creditHtml = '<span style="color:var(--accent);font-weight:600;font-size:12px">∞ ' + leftDays + 'd left</span>';
+      } else {
+        creditHtml = '<span style="color:var(--accent);font-weight:600;font-size:12px">∞ Lifetime</span>';
+      }
+    } else {
+      creditHtml = '<span class="credit-badge">' + r.credits + '</span>';
+    }
+    h += '<tr>' +
+      '<td><strong>' + r.name + '</strong></td>' +
+      '<td>' + creditHtml + '</td>' +
+      '<td>' + (r.total_keys || 0) + '</td>' +
+      '<td><span class="reseller-status ' + statusClass + '">' + r.status + '</span></td>' +
+      '<td style="font-size:12px;color:var(--text-3)">' + created + '</td>' +
+      '<td><div class="reseller-actions">' +
+        '<button class="icon-btn action-topup" data-tip="Top-up / Plan" data-name="' + r.name + '" data-unlimited="' + r.unlimited + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><use href="#icon-plus"/></svg></button>' +
+        '<button class="icon-btn action-loginas" data-tip="Login as" data-name="' + r.name + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><use href="#icon-login"/></svg></button>' +
+        '<button class="icon-btn ' + (r.status==='active'?'danger':'') + ' action-toggle" data-tip="' + toggleLabel + '" data-name="' + r.name + '" data-action="' + toggleAction + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><use href="#icon-x"/></svg></button>' +
+        '<button class="icon-btn danger action-deleteres" data-tip="Delete" data-name="' + r.name + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><use href="#icon-trash"/></svg></button>' +
+      '</div></td></tr>';
+  }
+  tb.innerHTML = h;
+}
+
+async function handleCreateReseller(){
+  var name = document.getElementById('resellerNameInput').value.trim();
+  var result = document.getElementById('resellerCreateResult');
+  if(!name || !/^[a-zA-Z0-9_]{2,32}$/.test(name)) { result.style.color = 'var(--danger)'; result.textContent = 'Invalid name (2-32 chars, letters/numbers/_)'; return; }
+  var d = await api('POST', '/api/reseller/create', { name: name });
+  if(!d) return;
+  if(d.error) { result.style.color = 'var(--danger)'; result.textContent = d.error; return; }
+  var siteUrl = window.location.origin + '/';
+  result.style.color = 'var(--success)';
+  result.innerHTML = 
+    '<div style="background:var(--surface-2); border:1px solid var(--border); border-radius:10px; padding:14px; margin-top:12px; font-family:monospace; line-height:1.6; user-select:all; position:relative">' +
+      '<button data-rname="' + d.name + '" data-rpass="' + d.password + '" onclick="copyCreatedReseller(this.dataset.rname, this.dataset.rpass)" style="position:absolute; right:8px; top:8px; border:none; background:var(--surface-opaque); color:var(--text-2); padding:4px 8px; border-radius:6px; font-size:11px; cursor:pointer">Copy All</button>' +
+      'Username: <code>' + d.name + '</code><br>' +
+      'Password: <code>' + d.password + '</code><br>' +
+      siteUrl +
+    '</div>';
+  document.getElementById('resellerNameInput').value = '';
+  loadResellers();
+}
+
+function copyCreatedReseller(name, pass){
+  var bt = String.fromCharCode(96);
+  var nl = String.fromCharCode(10);
+  var text = ['Username: ' + bt + name + bt, 'Password: ' + bt + pass + bt, window.location.origin + '/'].join(nl);
+  try { navigator.clipboard.writeText(text); toast('Copied!', 'success'); } catch(e) { toast('Copy failed', 'error'); }
+}
+
+async function handleTopup(name, isUnlimited){
+  document.getElementById('modalTitle').textContent = 'Plan & Credits: ' + name;
+  document.getElementById('modalDesc').textContent = isUnlimited ? 'Unlimited Plan' : 'Select package or enter custom amount';
+  
+  var html = '';
+  if (isUnlimited) {
+    html = 
+      '<div style="display:flex;flex-direction:column;gap:12px;margin-bottom:20px">' +
+        '<div style="padding:14px;background:var(--accent-dim);border:1px solid rgba(34,211,238,0.2);border-radius:10px;font-size:13px;text-align:center">' +
+          '<strong style="color:var(--accent);display:block;margin-bottom:4px">∞ Unlimited Plan Active</strong>' +
+          '<div style="color:var(--text-2)">This reseller has active unlimited status.</div>' +
+        '</div>' +
+        '<button class="gen-btn" id="extend1mBtn" style="background:linear-gradient(135deg, var(--accent), var(--accent2));color:#05050A;justify-content:center;padding:12px;font-weight:700">' +
+          '+ Add 30 Days Unlimited' +
+        '</button>' +
+        '<button class="gen-btn" id="downgradeBtn" style="background:linear-gradient(135deg, var(--danger), #EF4444);color:#fff;justify-content:center;padding:12px">' +
+          'Downgrade to Credit Plan' +
+        '</button>' +
+      '</div>' +
+      '<div class="modal-actions"><button class="cancel" onclick="closeModal()">Close</button></div>';
+  } else {
+    html =
+      '<div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px">' +
+        '<label style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--surface-2);border:1px solid var(--border);border-radius:8px;cursor:pointer">' +
+          '<input type="radio" name="pkg" value="nano" style="accent-color:var(--accent)">' +
+          '<span><strong>Nano</strong> — 200 credits</span>' +
+        '</label>' +
+        '<label style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--surface-2);border:1px solid var(--border);border-radius:8px;cursor:pointer">' +
+          '<input type="radio" name="pkg" value="small">' +
+          '<span><strong>Small</strong> — 550 credits</span>' +
+        '</label>' +
+        '<label style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--surface-2);border:1px solid var(--border);border-radius:8px;cursor:pointer">' +
+          '<input type="radio" name="pkg" value="medium">' +
+          '<span><strong>Medium</strong> — 1150 credits</span>' +
+        '</label>' +
+        '<div style="margin-top:8px;margin-bottom:8px">' +
+          '<label style="display:block;font-size:11px;color:var(--text-3);margin-bottom:6px;text-transform:uppercase">Or Custom Credit Amount</label>' +
+          '<input type="number" id="customAmountInput" class="gen-input" placeholder="e.g. 30 or -30" style="background:var(--surface-2)">' +
+        '</div>' +
+        '<div style="display:flex;gap:8px;margin-top:4px">' +
+          '<div style="flex:1;padding:10px 12px;background:var(--accent-dim);border:1px solid rgba(34,211,238,0.2);border-radius:10px;font-size:12px;text-align:center;cursor:pointer" id="upgrade1mOpt">' +
+            '<strong style="color:var(--accent);display:block">Unlimited 1 Month</strong>' +
+            '<div style="font-size:10px;color:var(--text-2);margin-top:2px">Unlimited keys for 30 days</div>' +
+          '</div>' +
+          '<div style="flex:1;padding:10px 12px;background:var(--accent-dim);border:1px solid rgba(34,211,238,0.2);border-radius:10px;font-size:12px;text-align:center;cursor:pointer" id="upgradeOpt">' +
+            '<strong style="color:var(--accent);display:block">Unlimited Lifetime</strong>' +
+            '<div style="font-size:10px;color:var(--text-2);margin-top:2px">Lifetime unlimited generation</div>' +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="modal-actions"><button class="cancel" onclick="closeModal()">Cancel</button><button class="confirm" id="confirmTopup">Confirm</button></div>';
+  }
+
+  document.getElementById('modalBody').innerHTML = html;
+  document.getElementById('modalOverlay').classList.add('active');
+  
+  if (isUnlimited) {
+    document.getElementById('extend1mBtn').onclick = async function(){
+      if(!confirm('Add 30 days unlimited to ' + name + '?')) return;
+      closeModal();
+      var d = await api('POST', '/api/reseller/upgrade', { name: name, duration: '1m' });
+      if(!d) return;
+      toast(name + ' extended 30 days unlimited!', 'success');
+      loadResellers();
+    };
+    document.getElementById('downgradeBtn').onclick = async function(){
+      if(!confirm('Downgrade ' + name + ' to credit plan?')) return;
+      closeModal();
+      var d = await api('POST', '/api/reseller/downgrade', { name: name });
+      if(!d) return;
+      toast(name + ' downgraded to credit plan.', 'success');
+      loadResellers();
+    };
+  } else {
+    document.getElementById('confirmTopup').onclick = async function(){
+      var customVal = document.getElementById('customAmountInput').value.trim();
+      var d = null;
+      if (customVal !== '') {
+        var amt = parseInt(customVal);
+        if (isNaN(amt)) { toast('Invalid custom amount', 'error'); return; }
+        d = await api('POST', '/api/reseller/topup', { name: name, amount: amt });
+      } else {
+        var pkg = document.querySelector('input[name="pkg"]:checked');
+        if(!pkg) { toast('Select package or enter custom amount', 'error'); return; }
+        d = await api('POST', '/api/reseller/topup', { name: name, package: pkg.value });
+      }
+      closeModal();
+      if(!d) return;
+      if(d.error) { toast(d.error, 'error'); return; }
+      toast(name + ' +' + d.added + ' credits (' + d.credits + ' total)', 'success');
+      loadResellers();
+    };
+    document.getElementById('upgrade1mOpt').onclick = async function(){
+      if(!confirm('Upgrade ' + name + ' to 1 Month Unlimited?')) return;
+      closeModal();
+      var d = await api('POST', '/api/reseller/upgrade', { name: name, duration: '1m' });
+      if(!d) return;
+      if(d.error) { toast(d.error, 'error'); return; }
+      toast(name + ' upgraded to 1 Month Unlimited!', 'success');
+      loadResellers();
+    };
+    document.getElementById('upgradeOpt').onclick = async function(){
+      if(!confirm('Upgrade ' + name + ' to Lifetime Unlimited?')) return;
+      closeModal();
+      var d = await api('POST', '/api/reseller/upgrade', { name: name, duration: 'lifetime' });
+      if(!d) return;
+      if(d.error) { toast(d.error, 'error'); return; }
+      toast(name + ' upgraded to Lifetime Unlimited!', 'success');
+      loadResellers();
+    };
+  }
+}
+
+async function handleToggleReseller(name, action){
+  var label = action === 'ban' ? 'Ban' : 'Unban';
+  document.getElementById('modalTitle').textContent = label + ' Reseller';
+  document.getElementById('modalDesc').textContent = label + ' "' + name + '"?';
+  document.getElementById('modalBody').innerHTML =
+    '<div class="modal-actions"><button class="cancel" onclick="closeModal()">Cancel</button><button class="confirm ' + (action==='ban'?'danger':'') + '" id="confirmToggle">' + label + '</button></div>';
+  document.getElementById('modalOverlay').classList.add('active');
+  document.getElementById('confirmToggle').onclick = async function(){
+    var d = await api('POST', '/api/reseller/toggle', { name: name, action: action });
+    closeModal();
+    if(!d) return;
+    toast(name + ' ' + d.status, 'success');
+    loadResellers();
+  };
+}
+
+async function handleLoginAsReseller(name){
+  var d = await api('POST', '/api/reseller/login-as', { name: name });
+  if(!d || d.error) { toast(d ? d.error : 'Failed', 'error'); return; }
+  token = d.token;
+  localStorage.setItem(TOKEN_KEY, token);
+  var payload = decodeJWT(token);
+  window._isAdmin = false;
+  document.getElementById('roleBadge').textContent = 'reseller';
+  document.getElementById('roleBadge').style.color = 'var(--success)';
+  showResellerTab(false);
+  switchTab('keys');
+  loadKeys();
+  loadCredits();
+  toast('Switched to ' + name, 'success');
+}
+
+async function handleDeleteReseller(name){
+  document.getElementById('modalTitle').textContent = 'Delete Reseller';
+  document.getElementById('modalDesc').textContent = 'Permanently delete "' + name + '"? This cannot be undone.';
+  document.getElementById('modalBody').innerHTML =
+    '<p style="color:var(--danger);font-size:13px;margin-bottom:16px">All data for this reseller will be removed.</p>' +
+    '<div class="modal-actions"><button class="cancel" onclick="closeModal()">Cancel</button><button class="confirm danger" id="confirmDelRes">Delete</button></div>';
+  document.getElementById('modalOverlay').classList.add('active');
+  document.getElementById('confirmDelRes').onclick = async function(){
+    var d = await api('POST', '/api/reseller/delete', { name: name });
+    closeModal();
+    if(!d) return;
+    toast('Deleted ' + name, 'success');
+    loadResellers();
+  };
+}
+
+// Event delegation for reseller actions
+document.addEventListener('click', function(e){
+  var btn = e.target.closest('.action-topup');
+  if(btn) { handleTopup(btn.dataset.name, btn.dataset.unlimited === 'true'); return; }
+  btn = e.target.closest('.action-toggle');
+  if(btn) { handleToggleReseller(btn.dataset.name, btn.dataset.action); return; }
+  btn = e.target.closest('.action-loginas');
+  if(btn) { handleLoginAsReseller(btn.dataset.name); return; }
+  btn = e.target.closest('.action-deleteres');
+  if(btn) { handleDeleteReseller(btn.dataset.name); return; }
+});
+
+// ─── Authentication ────────────────────────────
+async function handleLogin(){
+  const u = document.getElementById('loginUser').value;
+  const p = document.getElementById('loginPass').value;
+  const err = document.getElementById('loginError');
+  if(!u || !p) { err.textContent = 'Fill in all fields'; return; }
+  err.textContent = '';
+  try {
+    const r = await fetch(apiUrl('/api/login'), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username: u, password: p })
+    });
+    const d = await r.json();
+    if(d.token) {
+      token = d.token;
+      localStorage.setItem(TOKEN_KEY, token);
+      var payload = decodeJWT(token);
+      var isAdmin = !payload.role || payload.role === 'admin';
+      var roleName = payload.role || 'admin';
+      window._isAdmin = isAdmin;
+      document.getElementById('roleBadge').textContent = roleName;
+      document.getElementById('roleBadge').style.color = isAdmin ? 'var(--accent)' : 'var(--success)';
+      showResellerTab(isAdmin);
+      show('dash');
+      switchTab('keys');
+      Promise.all([loadKeys(), loadCredits()]);
+      toast('Welcome back', 'success');
+    } else {
+      err.textContent = d.error || 'Invalid credentials';
+    }
+  } catch(e) {
+    err.textContent = 'Connection error';
+  }
+}
+
+function handleLogout(){
+  token = '';
+  localStorage.removeItem(TOKEN_KEY);
+  show('login');
+  document.getElementById('loginUser').value = '';
+  document.getElementById('loginPass').value = '';
+  toast('Logged out', '');
+}
+
+// ─── API Helper ──────────────────────────────────
+function apiUrl(path){
+  var base = (window.NHATDUYPN_CONFIG && window.NHATDUYPN_CONFIG.API_BASE_URL) || '';
+  return base.replace(/\/$/, '') + path;
+}
+
+async function api(method, path, body){
+  try {
+    const opts = { method: method, headers: { 'Authorization': 'Bearer ' + token } };
+    if(body) {
+      opts.headers['Content-Type'] = 'application/json';
+      opts.body = JSON.stringify(body);
+    }
+    const r = await fetch(apiUrl(path), opts);
+    if(r.status === 401) {
+      handleLogout();
+      toast('Session expired', 'error');
+      return null;
+    }
+    return await r.json();
+  } catch(e) {
+    toast('Network error', 'error');
+    return null;
+  }
+}
+
+// ─── Load Data ──────────────────────────────────
+async function loadCredits(){
+  var d = await api('GET', '/api/me');
+  if(!d) return;
+  var genCredit = document.getElementById('genCreditDisplay');
+  if(d.role === 'reseller') {
+    document.getElementById('creditBadge').style.display = '';
+    var isUnlimited = d.unlimited;
+    document.getElementById('creditAmount').textContent = isUnlimited ? '∞' : d.credits;
+    document.getElementById('creditStat').style.display = '';
+    document.getElementById('statCredits').textContent = isUnlimited ? '∞' : d.credits;
+    genCredit.style.display = '';
+    document.getElementById('genCreditAmount').textContent = isUnlimited ? '∞' : d.credits;
+  } else {
+    document.getElementById('creditBadge').style.display = 'none';
+    document.getElementById('creditStat').style.display = 'none';
+    genCredit.style.display = 'none';
+  }
+}
+
+async function loadKeys(){
+  var sel = document.getElementById('keyFilter');
+  var payload = decodeJWT(token);
+  var isAdmin = !payload.role || payload.role === 'admin';
+  if(isAdmin) {
+    var rl = await api('GET', '/api/resellers');
+    var curVal = sel.value;
+    sel.innerHTML = '<option value="">All creators</option><option value="reseller:admin">Admin only</option>';
+    if(rl && rl.length) {
+      rl.forEach(function(r){ sel.innerHTML += '<option value="reseller:' + r.name + '">' + r.name + '</option>'; });
+    }
+    sel.value = curVal;
+  }
+  var filter = sel.value;
+  var path = '/api/keys';
+  if(filter) path += '?filter=' + encodeURIComponent(filter);
+  const d = await api('GET', path);
+  if(!d) return;
+  window._allRawKeys = d;
+  filterKeysLocal();
+}
+
+function filterKeysLocal(){
+  var keys = window._allRawKeys || [];
+  var statusSel = document.getElementById('statusFilter').value;
+  var now = Date.now();
+  var filtered = keys.filter(function(item){
+    var isDeleted = item.deleted === true;
+    var isPending = !isDeleted && item.activated === false;
+    var isActive = !isDeleted && !isPending && item.expires_at > now;
+    var isExpired = !isDeleted && !isPending && !isActive;
+    if(statusSel === 'pending' && !isPending) return false;
+    if(statusSel === 'active' && !isActive) return false;
+    if(statusSel === 'expired' && !isExpired) return false;
+    return true;
+  });
+  renderKeysTable(filtered);
+  updateStats(filtered);
+}
+
+function renderKeysTable(d){
+  const tb = document.getElementById('keyBody');
+  if(!d.length) {
+    tb.innerHTML = '<tr><td colspan="9" class="empty">No keys found</td></tr>';
+    return;
+  }
+  var h = '';
+  for(var i = 0; i < d.length; i++) {
+    var item = d[i];
+    var isDeleted = item.deleted === true;
+    var isPending = !isDeleted && item.activated === false;
+    var isActive = !isDeleted && !isPending && item.expires_at > Date.now();
+    var statusCls, statusIcon, statusTxt;
+    if(isDeleted) { statusCls = 'badge-expired'; statusIcon = '#icon-x'; statusTxt = 'Deleted'; }
+    else if(isPending) { statusCls = 'badge-pending'; statusIcon = '#icon-clock'; statusTxt = 'Not Used'; }
+    else if(isActive) { statusCls = 'badge-active'; statusIcon = '#icon-check'; statusTxt = 'Active'; }
+    else { statusCls = 'badge-expired'; statusIcon = '#icon-x'; statusTxt = 'Expired'; }
+    var fmt = function(t){ 
+      if (!t) return '—';
+      var d = new Date(t);
+      var pad = function(n){ return n.toString().padStart(2, '0'); };
+      return pad(d.getDate()) + '/' + pad(d.getMonth() + 1) + ' ' + pad(d.getHours()) + ':' + pad(d.getMinutes());
+    };
+    var createdStr = fmt(item.created_at);
+    var activatedStr = item.activated ? fmt(item.activated_at) : '<span style="color:var(--text-3)">—</span>';
+    var ed = isDeleted ? '<span style="color:var(--danger)">Deleted</span>' : (isPending ? '<span style="color:#FBBF24">Not activated</span>' : fmt(item.expires_at));
+    var dur = ({d1:'1D',d3:'3D',d7:'7D',d15:'15D',d30:'30D'}[item.duration] || item.duration || '—');
+    var maxD = item.max_devices || 1;
+    var devCnt = Math.min(item.device_count || 0, maxD);
+    var keySafe = item.key.replace(/"/g, '&quot;');
+    var devHtml = devCnt > 0
+      ? '<span style="color:var(--text-2);font-size:12px">' + devCnt + '/' + maxD + '</span>'
+      : '<span style="color:var(--text-3)">0/' + maxD + '</span>';
+    var resetBtn = (devCnt > 0 && !isDeleted)
+      ? '<button class="icon-btn action-reset" data-tip="Reset HWID"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><use href="#icon-refresh"/></svg></button>'
+      : '';
+    var actionBtns = isDeleted
+      ? '<button class="icon-btn action-restore" data-tip="Restore Key" style="border-color:var(--success);color:var(--success)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><use href="#icon-restore"/></svg></button>'
+      : '<button class="icon-btn action-edit" data-tip="Edit expiry"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><use href="#icon-clock"/></svg></button>' +
+        resetBtn +
+        '<button class="icon-btn danger action-delete" data-tip="Hide/Delete key"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><use href="#icon-trash"/></svg></button>';
+    var creator = item.created_by || 'admin';
+    var platformBadge = '';
+    if (item.creator_platform === 'telegram') {
+      platformBadge = '<span style="font-size:10px;color:#38BDF8;margin-left:3px">(Bot)</span>';
+    } else if (item.creator_platform === 'api') {
+      platformBadge = '<span style="font-size:10px;color:#FBBF24;margin-left:3px">(API)</span>';
+    }
+    var creatorLabel = (creator === 'admin' ? '<span style="color:var(--accent)">admin</span>' : '<span style="color:var(--text-2);font-size:12px">' + creator + '</span>') + platformBadge;
+    h += '<tr data-key="' + keySafe + '">' +
+      '<td><div class="key-cell"><span>' + item.key + '</span><button class="copy-btn action-copy" data-tip="Copy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><use href="#icon-copy"/></svg></button></div></td>' +
+      '<td>' + dur + '</td>' +
+      '<td><span class="badge ' + statusCls + '"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><use href="' + statusIcon + '"/></svg>' + statusTxt + '</span></td>' +
+      '<td>' + devHtml + '</td>' +
+      '<td style="font-size:12px;color:var(--text-3)">' + createdStr + '</td>' +
+      '<td style="font-size:12px;color:var(--text-3)">' + activatedStr + '</td>' +
+      '<td style="font-size:12px;color:var(--text-3)">' + ed + '</td>' +
+      '<td style="font-size:12px">' + creatorLabel + '</td>' +
+      '<td><div class="action-cell">' + actionBtns + '</div></td></tr>';
+  }
+  tb.innerHTML = h;
+}
+
+function updateStats(keys){
+  var a = 0, e = 0, p = 0;
+  for(var i = 0; i < keys.length; i++) {
+    if(keys[i].deleted) continue;
+    if(keys[i].activated === false) p++;
+    else if(keys[i].expires_at > Date.now()) a++;
+    else e++;
+  }
+  document.getElementById('statTotal').textContent = keys.length;
+  document.getElementById('statActive').textContent = a + p;
+  document.getElementById('statExpired').textContent = e;
+}
+
+// ─── Key Actions ────────────────────────────────
+async function handleGenerate(){
+  var dur = document.getElementById('genDuration').value;
+  var dev = document.getElementById('genDevices').value;
+  var qty = parseInt(document.getElementById('genQuantity').value) || 1;
+  var btn = document.querySelector('.gen-btn');
+  btn.disabled = true;
+  btn.textContent = 'Generating...';
+  var d = await api('POST', '/api/keys/generate', { type: dur, max_devices: dev, quantity: qty });
+  btn.disabled = false;
+  btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><use href="#icon-plus"/></svg> Generate';
+  if(!d || !d.success) return;
+  var keys = d.keys || [];
+  if(d.credits_remaining !== undefined) {
+    document.getElementById('genCreditAmount').textContent = d.unlimited ? '∞' : d.credits_remaining;
+  }
+  var now = new Date();
+  var expDate = new Date(now.getTime() + ({ '1d':86400000, '7d':604800000, '15d':1296000000, '30d':2592000000 }[dur] || 86400000));
+  var dateStr = expDate.toLocaleDateString();
+  var lines = [];
+  for(var i = 0; i < keys.length; i++) {
+    lines.push('`' + keys[i] + '`');
+    lines.push('Date: ' + dateStr);
+    lines.push('Thanks');
+    if(i < keys.length - 1) lines.push('---');
+  }
+  var text = lines.join('\n');
+  document.getElementById('genResultText').textContent = text;
+  document.getElementById('genResult').classList.add('show');
+  window._lastFormattedKeys = text;
+  loadKeys();
+}
+
+function copyFormattedKeys(){
+  var text = window._lastFormattedKeys || document.getElementById('genResultText').textContent;
+  if(!text) return;
+  try { navigator.clipboard.writeText(text); toast('Copied!', 'success'); } catch(e) { toast('Copy failed', 'error'); }
+}
+
+async function editExpiry(key){
+  document.getElementById('modalTitle').textContent = 'Edit Expiry';
+  document.getElementById('modalDesc').textContent = 'Add days to: ' + key.substring(0, 12) + '...';
+  document.getElementById('modalBody').innerHTML =
+    '<input class="modal-input" type="number" id="editDays" value="30" min="1" placeholder="Days to add">' +
+    '<div class="modal-actions"><button class="cancel" id="modalCancel">Cancel</button><button class="confirm" id="modalConfirm">Update</button></div>';
+  document.getElementById('modalOverlay').classList.add('active');
+  document.getElementById('modalConfirm').onclick = function(){ confirmEdit(key); };
+  document.getElementById('modalCancel').onclick = closeModal;
+}
+
+async function confirmEdit(key){
+  var days = parseInt(document.getElementById('editDays').value) || 30;
+  var d = await api('POST', '/api/keys/update', { key: key, days: days });
+  if(!d || !d.success) return;
+  closeModal();
+  toast('Expiry +' + days + 'd', 'success');
+  loadKeys();
+}
+
+async function resetHwid(key){
+  if(!confirm('Reset HWID for this key?')) return;
+  var d = await api('POST', '/api/keys/reset', { key: key });
+  if(!d || !d.success) return;
+  toast('HWID reset', 'success');
+  loadKeys();
+}
+
+async function delKey(key){
+  if(!confirm('Hide this key? (Key will be hidden but remains restorable by admin)')) return;
+  var d = await api('POST', '/api/keys/delete', { key: key });
+  if(!d || !d.success) return;
+  toast('Key hidden', 'success');
+  loadKeys();
+}
+
+async function restoreKey(key){
+  var d = await api('POST', '/api/keys/restore', { key: key });
+  if(!d || !d.success) return;
+  toast('Key restored successfully!', 'success');
+  loadKeys();
+}
+
+function closeModal(){ document.getElementById('modalOverlay').classList.remove('active'); }
+
+// ─── Event Delegation ──────────────────────────
+document.addEventListener('click', function(e){
+  var btn = e.target.closest('.action-copy');
+  if(btn) {
+    var key = btn.closest('tr').getAttribute('data-key');
+    try { navigator.clipboard.writeText(key); toast('Copied!', 'success'); } catch(e) { toast('Copy failed', 'error'); }
+    return;
+  }
+  btn = e.target.closest('.action-edit');
+  if(btn) { editExpiry(btn.closest('tr').getAttribute('data-key')); return; }
+  btn = e.target.closest('.action-reset');
+  if(btn) { resetHwid(btn.closest('tr').getAttribute('data-key')); return; }
+  btn = e.target.closest('.action-delete');
+  if(btn) { delKey(btn.closest('tr').getAttribute('data-key')); return; }
+  btn = e.target.closest('.action-restore');
+  if(btn) { restoreKey(btn.closest('tr').getAttribute('data-key')); return; }
+});
+
+document.getElementById('modalOverlay').addEventListener('click', function(e){ if(e.target === this) closeModal(); });
+document.getElementById('loginPass').addEventListener('keydown', function(e){ if(e.key === 'Enter') handleLogin(); });
+document.getElementById('loginUser').addEventListener('keydown', function(e){ if(e.key === 'Enter') document.getElementById('loginPass').focus(); });
+
+// ─── Auto Login ─────────────────────────────────
+if(token) {
+  var payload = decodeJWT(token);
+  var isAdmin = !payload.role || payload.role === 'admin';
+  var roleName = payload.role || 'admin';
+  window._isAdmin = isAdmin;
+  document.getElementById('roleBadge').textContent = roleName;
+  document.getElementById('roleBadge').style.color = isAdmin ? 'var(--accent)' : 'var(--success)';
+  showResellerTab(isAdmin);
+  show('dash'); switchTab('keys'); Promise.all([loadKeys(), loadCredits()]);
+} else { show('login'); }
+</script>
+</body>
+</html>

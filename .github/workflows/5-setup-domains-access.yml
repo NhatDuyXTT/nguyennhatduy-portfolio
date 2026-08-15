@@ -1,0 +1,54 @@
+name: 5. Setup Domains and Access
+
+on:
+  workflow_dispatch:
+
+jobs:
+  domains-and-access:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Gán domain cho web
+        env:
+          TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          curl -s -X POST "https://api.cloudflare.com/client/v4/accounts/$ACCOUNT_ID/pages/projects/nguyennhatduy-web/domains" \
+            -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+            -d '{"name":"nguyennhatduy.qzz.io"}'
+
+      - name: Gán domain cho admin
+        env:
+          TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          curl -s -X POST "https://api.cloudflare.com/client/v4/accounts/$ACCOUNT_ID/pages/projects/nguyennhatduy-admin/domains" \
+            -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+            -d '{"name":"admin.nguyennhatduy.qzz.io"}'
+
+      - name: Tạo Cloudflare Access Application cho admin
+        env:
+          TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}
+        run: |
+          RESP=$(curl -s -X POST "https://api.cloudflare.com/client/v4/accounts/$ACCOUNT_ID/access/apps" \
+            -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+            -d '{
+              "name": "Admin Dashboard",
+              "domain": "admin.nguyennhatduy.qzz.io",
+              "type": "self_hosted",
+              "session_duration": "24h"
+            }')
+          echo "$RESP"
+          APP_ID=$(echo "$RESP" | node -pe "JSON.parse(require('fs').readFileSync('/dev/stdin')).result?.id ?? ''")
+          if [ -z "$APP_ID" ]; then
+            echo "::error::Tạo Access Application thất bại. Kiểm tra CLOUDFLARE_API_TOKEN có quyền 'Access: Apps and Policies Edit' chưa."
+            exit 1
+          fi
+          curl -s -X POST "https://api.cloudflare.com/client/v4/accounts/$ACCOUNT_ID/access/apps/$APP_ID/policies" \
+            -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+            -d "{
+              \"name\": \"Allow owner\",
+              \"decision\": \"allow\",
+              \"include\": [{\"email\": {\"email\": \"$ADMIN_EMAIL\"}}]
+            }"
