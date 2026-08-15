@@ -1,8 +1,7 @@
 import { Routes, Route, Link } from "react-router-dom";
 import LicensePanel from "./pages/LicensePanel";
 
-// Không có trang /login: Cloudflare Access chặn toàn bộ domain admin.nguyennhatduy.qzz.io
-// ở edge, chỉ email được whitelist trong Access Policy mới vào được app này.
+// Cloudflare Access không được sử dụng. Trang license panel tự xử lý đăng nhập qua License API.
 
 export default function App() {
   return (
